@@ -1,0 +1,347 @@
+/* Reset margin for the body and html to remove any default spacing */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color:  #282c34;
+  justify-content: center;
+  align-items: center;
+}
+
+.App {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: rgba(0, 255, 238, 0.589);
+  text-decoration: underline;
+  margin: 0;
+}
+
+/* SELECT IMAGES CSS*/
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* Wrapper to control the overall positioning */
+.button-wrapper-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%; /* Adjust this value to move the container up or down */
+}
+
+/* text above the buttons */
+.button-wrapper-select p {
+  color: rgba(0, 255, 238, 0.589);
+  margin: 10px 0; 
+  font-size: 40px; 
+  margin-bottom: 3%;
+}
+
+/* Center button container horizontally */
+.button-container-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the buttons */
+.button-container-select button {
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin: 10px 10px; /* Space between buttons */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-container-select button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* Select new files or exit */
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* Wrapper to control the overall positioning */
+.c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%; /* Adjust this value to move the container up or down */
+}
+
+/* text above the buttons */
+.button-wrapper-new-or-exit p {
+  color: rgba(0, 255, 238, 0.589);
+  margin: 10px 0; 
+  font-size: 20px; 
+  margin-bottom: 3%;
+}
+
+/* Center button container horizontally */
+.button-container-new-or-exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the buttons */
+.button-container-new-or-exit button {
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin: 10px 10px; /* Space between buttons */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-container-new-or-exit button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* SAVE IMAGES CSS*/
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+/* Wrapper to control the overall positioning */
+.button-wrapper-save-location {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%; /* Adjust this value to move the container up or down */
+}
+
+/* text above the buttons */
+.button-wrapper-save-location p {
+  color: rgba(0, 255, 238, 0.589);
+  margin: 10px 0; 
+  font-size: 45px; 
+  margin-bottom: 3%;
+  left: 20%;
+}
+
+/* text above the buttons */
+.button-wrapper-save-location b {
+  color: rgba(0, 255, 238, 0.589);
+  margin: 10px 0; 
+  align-items: center;
+  justify-content: center;
+}
+
+/* Center button container horizontally */
+.button-container-save-location {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the buttons */
+.button-container-save-location button{
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin-bottom: 3%;
+  border-radius: 12px; /* Rounded corners */
+  font-size: 25px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-container-save-location button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* View Selected Files CSS*/
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* Wrapper to control the overall positioning */
+.button-wrapper-selected-files {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%; /* Adjust this value to move the container up or down */
+  margin-bottom: 2%;
+}
+
+/* text above the buttons */
+.button-wrapper-selected-files p {
+  color: rgba(0, 255, 238, 0.589);
+  margin: 10px 0; 
+  font-size: 40px; 
+  margin-bottom: 3%;
+}
+
+/* Center button container horizontally */
+.button-container-selected-files {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the buttons */
+.button-container-selected-files button {
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin: 0 10px; /* Space between buttons */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-container-selected-files button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
+
+/* Specific class for Continue button */
+.continue-button {
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-radius: 12px; /* Rounded corners */
+  font-size: 20px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.continue-button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+/* Specific class for Continue button */
+.back-button {
+  background-color: #007bff; 
+  color: white; /* text color */
+  border: none;
+  padding: 15px 30px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-radius: 12px; /* Rounded corners */
+  font-size: 20px; /* Larger text */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.image-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.image-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.image-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.image-item:hover {
+  transform: scale(1.1);
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  border-radius: 3px;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.remove-button:hover{
+  transform: scale(1.1);
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+
