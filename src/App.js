@@ -37,7 +37,7 @@ function App() {
     setSelectedImages(prevImages => {
       const prevPaths = prevImages.map(image => image.path);
       const newImages = images.filter(image => ! prevPaths.includes(image.path));
-      return [...prevImages, ...newImages];
+      return [...prevImages, ...newImages].slice(0, 1000);
     })
   };
 
