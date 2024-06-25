@@ -106,6 +106,7 @@ ipcMain.handle('process-images', async (event, images, saveLocation) => {
     throw new Error('Invalid arguments');
   }
 
+  var paddedImages = [];
   for (const image of images) {
     if (!image.path) {
       throw new Error('Image object does not contain a path property');
@@ -113,16 +114,31 @@ ipcMain.handle('process-images', async (event, images, saveLocation) => {
 
     const { width, height } = await sharp(image.path).metadata();
     const size = Math.max(width, height);
+    var paddedImage;
 
-    const paddedImage = await sharp(image.path)
-      .extend({
-        top: Math.floor((size - height) / 2),
-        bottom: Math.ceil((size - height) / 2),
-        left: Math.floor((size - width) / 2),
-        right: Math.ceil((size - width) / 2),
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
-      })
-      .toBuffer();
+    // if the difference between width and height is large...
+    if (Math.abs(width - height) > 5) {
+
+      paddedImage = await sharp(image.path)
+        .extend({
+          top: Math.floor((size - height) / 2),
+          bottom: Math.ceil((size - height) / 2),
+          left: Math.floor((size - width) / 2),
+          right: Math.ceil((size - width) / 2),
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
+        .toBuffer();
+    }
+    // if the difference between width and height is small
+    else {
+      const cropSize = Math.min(width, height);
+      paddedImage = await sharp(image.path).extract({
+        left: Math.floor((width - cropSize) / 2),
+        top: Math.floor((height - cropSize) / 2),
+        width: cropSize,
+        height: cropSize})
+        .toBuffer();
+    }
 
     let newFilePath = path.join(saveLocation, `${path.basename(image.path)}`);
 
@@ -134,6 +150,8 @@ ipcMain.handle('process-images', async (event, images, saveLocation) => {
     }
 
     await fs.promises.writeFile(newFilePath, paddedImage);
+    paddedImages.push(newFilePath);
   }
+  return paddedImages;
 });
 

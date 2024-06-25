@@ -13,6 +13,7 @@ function App() {
   const [view, setView] = useState('main');
   const [saveLocation, setSaveLocation] = useState('No save location selected');
   const [selectedImages, setSelectedImages] = useState([]);
+  const [paddedImages, setPaddedImages] = useState([]);
   const [error, setError] = useState(false);
   const savePathRef = useRef(null);
 
@@ -31,6 +32,14 @@ function App() {
       setView('selectImages');
     }
   };
+
+  const getImagePreviews = async (imageFiles) => {
+    var imagePreviews = await Promise.all(imageFiles.map(async (image) => {
+      const dataUrl = await window.electron.readImage(image);
+      return { path: image, dataUrl };
+    }));
+    return imagePreviews;
+  }
 
   // helper function to add images to the selected images (filters out already added images)
   const addImages = (images) => {
@@ -58,7 +67,7 @@ function App() {
   // pad the images
   const processImages = async () => {
     try {
-      await window.electron.processImages(selectedImages, saveLocation);
+      setPaddedImages(await(getImagePreviews(await window.electron.processImages(selectedImages, saveLocation))));
       setView('processComplete');
     } catch (error) {
       console.error('Failed to process images:', error);
@@ -119,13 +128,26 @@ function App() {
       )}
 
 
-      {view === 'gallery' && (
+      {view === 'selectedGallery' && (
         <div>
           <ImageGallery
             images={selectedImages}
             toggleImageSelection={toggleImageSelection}
             onBack={() => setView('selectImages')}
             removeImage={removeImage}
+            view={view}
+          />
+        </div>
+      )}
+
+      {view === 'paddedGallery' && (
+        <div>
+          <ImageGallery
+            images={paddedImages}
+            toggleImageSelection={toggleImageSelection}
+            onBack={() => setView('processComplete')}
+            removeImage={removeImage}
+            view={view}
           />
         </div>
       )}
@@ -136,6 +158,7 @@ function App() {
           <ReturnOrExitComponent 
           onReturn={handleReturnToHome} 
           onExit={handleExitApp} 
+          setView={setView}
         />
       )}
     </div>
