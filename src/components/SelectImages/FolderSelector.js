@@ -8,7 +8,7 @@ const FolderSelector = ({ saveLocation, setError, addImages, setView }) => {
       if (result && result.length > 0) {
         const folderPath = result[0];
         const folderContents = await window.electron.getImages(folderPath);
-        const validExtensions = ['jpeg', 'png', 'svg'];
+        const validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'svg'];
         const imageFiles = folderContents.filter(image => 
           validExtensions.some(extension => image.toLowerCase().endsWith(extension))
         );

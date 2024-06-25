@@ -7,7 +7,6 @@ contextBridge.exposeInMainWorld('electron', {
   send: (channel, data) => ipcRenderer.send(channel, data),
   receive: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args)),
   removeListener: (channel, func) => ipcRenderer.removeListener(channel, func),
-  openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   openFolderDialog: () => ipcRenderer.invoke('open-folder-dialog'),
   openMultiFileDialog: () => ipcRenderer.invoke('open-multi-file-dialog'),
   getImages: (folderPath) => ipcRenderer.invoke('get-images', folderPath),

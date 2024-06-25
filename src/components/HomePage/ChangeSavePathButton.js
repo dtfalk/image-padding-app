@@ -18,7 +18,7 @@ const ChangeSavePathButton = ({ setSaveLocation }) => {
 
   return (
     <div className="button-wrapper-save-location">
-      <p id="save-location-text">Select where to save your images</p>
+      <p id="save-location-text"><b>Select where to save your images</b></p>
       <div className="button-container-save-location">
         <button onClick={openFolderDialog}>Select Save Folder</button>
       </div>

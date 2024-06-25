@@ -6,7 +6,7 @@ const FileSelector = ({ saveLocation, setError, addImages }) => {
     try {
       const result = await window.electron.openMultiFileDialog();
       if (result && result.length > 0) {
-        const validExtensions = ['jpeg', 'png', 'svg', 'img'];
+        const validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'svg'];
         const imageFiles = result.filter(image => 
           validExtensions.some(extension => image.toLowerCase().endsWith(extension))
         );

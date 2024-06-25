@@ -1,74 +1,72 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const sharp = require('sharp');
-const { start } = require('repl');
 
-async function createWindow() {
-  const isDev = (await import('electron-is-dev')).default;
-  // Create the browser window.
-  const win = new BrowserWindow({
+// create the main window we use
+function createWindow() {
+
+  // initialization of the window
+  var win = new BrowserWindow({
     width: 800,
     height: 600,
     resizable: true,
     webPreferences: {
-        preload: path.join(__dirname, 'preload.js'),
-        nodeIntegration: true,
-        contextIsolation: true,
-    }
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: true,
+      webSecurity: false,
+    },
   });
-  
+
+  // remove the menu from the window
   win.removeMenu();
 
-  // Load the index.html from a URL
-  // const startURL = isDev
-  // ? 'http://localhost:3000'
-  // : 'http://localhost:5000'; // URL where serve is running
+  // url/path for the index html
+  const startURL = `file://${path.join(__dirname, 'index.html')}`
+  
+  // load the index file
+  win.loadURL(startURL);
 
-  // Load the index.html from a file path
-  // const indexPath = path.join(__dirname, 'index.html');
-  // console.log('hello')
-  // win.loadFile(indexPath).then((error) => {
-  //   console.log('Failed to load index.html:', error);
-  // });
-  // console.log('bye')
-  const startURL = isDev
-  ? 'http://localhost:3000'
-  : `file://${path.join(__dirname, '..', 'build', 'index.html')}`;
-  console.log(startURL);
-
-  await win.loadURL(startURL).catch((error) => {
-    throw new Error('Failed to load URL:', error);
-  });
-  //win.loadFile(path.join(__dirname, '..', 'build', 'index.html')).catch((error) => {
-  //  console.log('Failed to load index.html:', error);
- //});
-
-  // Open the DevTools.
   win.webContents.openDevTools();
+
 }
 
-// IPC handler for opening the file dialog
-ipcMain.handle('open-file-dialog', async () => {
-  const result = await dialog.showOpenDialog({
-    properties: ['openFile']
-  });
-  return result.filePaths;
+// once ready, display the window
+app.whenReady().then(createWindow);
+
+// when the final window is closed, exit the application
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// honestly not sure, just make sure there is always at least one window open
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 // IPC handler for opening the folder dialog
-ipcMain.handle('open-folder-dialog', async () => {
-  const result = await dialog.showOpenDialog({
-    properties: ['openDirectory']
+ipcMain.handle('open-folder-dialog', async (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openDirectory'],
+    filters: [{ name: 'Images', extensions: ['jpeg', 'jpg', 'png', 'svg', 'gif', 'svg'] }],
+    modal: true
   });
   return result.filePaths;
 });
 
 // IPC handler for opening a multi-selection file dialog
-ipcMain.handle('open-multi-file-dialog', async () => {
-  const result = await dialog.showOpenDialog({
+ipcMain.handle('open-multi-file-dialog', async (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  const result = await dialog.showOpenDialog(win, {
     properties: ['openFile', 'multiSelections'],
-    filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'img'] }],
+    filters: [{ name: 'Images', extensions: ['jpeg', 'jpg', 'png', 'svg', 'gif', 'svg'] }],
+    modal: true
   });
   return result.filePaths;
 });
@@ -86,7 +84,7 @@ ipcMain.handle('read-file', async (event, filePath) => {
 // IPC handler for getting images from a directory
 ipcMain.handle('get-images', async (event, folderPath) => {
   const files = await fs.promises.readdir(folderPath);
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg', 'img'];
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
   const images = files.filter(file => imageExtensions.includes(path.extname(file).toLowerCase()));
   return images.map(image => path.join(folderPath, image));
 });
@@ -97,13 +95,16 @@ ipcMain.handle('read-image', async (event, filePath) => {
   return `data:image/${path.extname(filePath).substring(1)};base64,${imageBuffer.toString('base64')}`;
 });
 
-ipcMain.handle('process-images', async (event, images, saveLocation) => {
+// Add IPC handler to exit the app
+ipcMain.handle('exit-app', () => {
+  app.quit();
+});
 
+// IPC handler for padding the images
+ipcMain.handle('process-images', async (event, images, saveLocation) => {
   if (!images || !Array.isArray(images) || !saveLocation) {
     throw new Error('Invalid arguments');
   }
-
-  const processedImages = [];
 
   for (const image of images) {
     if (!image.path) {
@@ -119,7 +120,7 @@ ipcMain.handle('process-images', async (event, images, saveLocation) => {
         bottom: Math.ceil((size - height) / 2),
         left: Math.floor((size - width) / 2),
         right: Math.ceil((size - width) / 2),
-        background: { r: 255, g: 255, b: 255, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
       })
       .toBuffer();
 
@@ -133,35 +134,6 @@ ipcMain.handle('process-images', async (event, images, saveLocation) => {
     }
 
     await fs.promises.writeFile(newFilePath, paddedImage);
-    processedImages.push(newFilePath);
-  }
-
-  return processedImages;
-});
-
-// Add IPC handler to exit the app
-ipcMain.handle('exit-app', () => {
-  app.quit();
-});
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow);
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
   }
 });
 
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
