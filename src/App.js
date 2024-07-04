@@ -117,7 +117,7 @@ function App() {
           <p
             id="savePath"
             ref={savePathRef}
-            style={{ color: error ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 255, 0, 0.589)', fontSize: '25px' }}
+            style={{ color: error ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 255, 0, 0.589)', fontSize: '20px' }}
           >
             <br /><b>Current Destination Location:</b> <br /> {saveLocation}
           </p>
