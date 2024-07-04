@@ -29,7 +29,7 @@ function createWindow() {
   // load the index file
   win.loadURL(startURL);
 
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 
   // Paths
   const userDataPath = app.getPath('userData');
