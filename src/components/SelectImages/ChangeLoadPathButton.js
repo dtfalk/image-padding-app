@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../App.css';
 
-const ChangeSavePathButton = ({ setSaveLocation }) => {
+const ChangeSavePathButton = ({ setSourceLocation }) => {
   const [folderPath, setFolderPath] = useState('No save location selected');
 
   const openFolderDialog = async () => {
@@ -9,7 +9,7 @@ const ChangeSavePathButton = ({ setSaveLocation }) => {
       const result = await window.electron.openFolderDialog();
       if (result && result.length > 0) {
         setFolderPath(result[0]);
-        setSaveLocation(result[0]);
+        setSourceLocation(result[0]);
       }
     } catch (error) {
       console.error('Failed to open folder dialog:', error);
@@ -17,10 +17,10 @@ const ChangeSavePathButton = ({ setSaveLocation }) => {
   };
 
   return (
-    <div className="button-wrapper-save-location">
-      <p id="save-location-text"><b>Select Destination Folder</b></p>
-      <div className="button-container-save-location">
-        <button onClick={openFolderDialog}>Change Destination Folder</button>
+    <div className="button-wrapper-source-location">
+      <p id="save-location-text"><b>Select Source Folder</b></p>
+      <div className="button-container-source-location">
+        <button onClick={openFolderDialog}>Change Source Folder</button>
       </div>
     </div>
   );

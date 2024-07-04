@@ -1,10 +1,10 @@
 import React from 'react';
 import '../../App.css';
 
-const FileSelector = ({ saveLocation, setError, addImages }) => {
+const FileSelector = ({ sourceLocation, addImages }) => {
   const openMultiFileDialog = async () => {
     try {
-      const result = await window.electron.openMultiFileDialog();
+      const result = await window.electron.openMultiFileDialog(sourceLocation);
       if (result && result.length > 0) {
         const validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'svg'];
         const imageFiles = result.filter(image => 
@@ -23,18 +23,9 @@ const FileSelector = ({ saveLocation, setError, addImages }) => {
     }
   };
 
-  const checkMultiFilePathExists = () => {
-    if (saveLocation === 'No save location selected') {
-      setError(true);
-    } else {
-      setError(false);
-      openMultiFileDialog();
-    }
-  };
-
   return (
     <div>
-      <button onClick={checkMultiFilePathExists}>Select Image(s)</button>
+      <button onClick={openMultiFileDialog}>Select Image(s)</button>
     </div>
   );
 };
